@@ -20,7 +20,7 @@ gcc -lncurses <filename.c> <filename.out>
 
 After running the file, a User Interface will open up in the terminal which look something like this:
 
-![alt text](image.png)
+![alt text](image1.png)
 
 You can use your arrow keys to select an option, if you want to either encrypt a file or decrypt a file or EXIT the program.
 
