@@ -1,0 +1,3 @@
+My name is Agam Harpreet Singh.
+
+This is my Minor Project for the Introductory Course in Computer Science (CSL1010).

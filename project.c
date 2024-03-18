@@ -219,17 +219,30 @@ int main(void)
             echo();
             mvwprintw(menu_win, 10, 2, "File: ");
             wrefresh(menu_win);
-            mvwscanw(menu_win, 10, 8, "%[^\n]%*c", file);
+            mvwscanw(menu_win, 10, 8, "%s", file);
 
             // the above function is used to scan only the file name
             
+            // checking if the file exists in the folder
+
+            int z = error(menu_win, file);
+
+            if(z == 1)
+            {
+                wgetch(menu_win);
+
+                wclear(menu_win);
+
+                continue;
+            }
+
             int x = 0;
 
             for(int i = 0; i < strlen(file); i++)
             {
-                if((int)file[i] == 32)
+                if((int)file[i] == 32 || file[i] == '\n')
                 {
-                    // if there exists a space in the name of the file then user is asked to input file name again
+                    // if there exists a space or a line break in the name of the file then user is asked to input file name again
 
                     mvwprintw(menu_win, 12, 2, "Please input correct File.");
                     wrefresh(menu_win);
@@ -249,18 +262,6 @@ int main(void)
                 continue;
             }
 
-            // checking if the file exists in the folder
-
-            int z = error(menu_win, file);
-
-            if(z == 1)
-            {
-                wgetch(menu_win);
-
-                wclear(menu_win);
-
-                continue;
-            }
 
             mvwprintw(menu_win, 12, 2, "Key: ");
             wrefresh(menu_win);
@@ -278,6 +279,19 @@ int main(void)
                 {
                     key2 += (int) key[i] * l;
                     l *= 10;
+                }
+                else if(key[i] == '\n')
+                {
+                    mvwprintw(menu_win, 14, 2, "Please put correct key.");
+                    wrefresh(menu_win);
+
+                    wgetch(menu_win);
+
+                    wclear(menu_win);
+
+                    m = 1;
+
+                    break;
                 }
                 else
                 {
@@ -329,20 +343,31 @@ int main(void)
             echo();
 
             // echo function allows inputed characters to be visible on the screen
-
-            char r1[100], r2[100];
             
             mvwprintw(menu_win, 10, 2, "File: " );
             wrefresh(menu_win);
-            mvwscanw(menu_win, 10, 8, "%[^\n]%*c", file);
+            mvwscanw(menu_win, 10, 8, "%s", file);
 
             // the above function is used to scan only the file name
+
+            // checking if the file exists in the folder
+
+            int z = error(menu_win, file);
+
+            if(z == 1)
+            {
+                wgetch(menu_win);
+
+                wclear(menu_win);
+
+                continue;
+            }
 
             int x = 0;
 
             for(int i = 0; i < strlen(file); i++)
             {
-                if((int)file[i] == 32)
+                if((int)file[i] == 32 || file[i] == '\n')
                 {
                     // if there exists a space in the name of the file then user is asked to input file name again
 
@@ -364,120 +389,7 @@ int main(void)
                 continue;
             }
 
-            // checking if the file exists in the folder
-
-            int z = error(menu_win, file);
-
-            if(z == 1)
-            {
-                wgetch(menu_win);
-
-                wclear(menu_win);
-
-                continue;
-            }
-
-            // getting the range of keys for decrypting the files
-
-            mvwprintw(menu_win, 12, 2, "Range of keys: ");
-            wrefresh(menu_win);
-            mvwscanw(menu_win, 12, 17, "%s %s", r1, r2);
-
-            // checking if the user inputted correct inital and final range
-
-            int rr1;
-            int l = 1;
-            int m = 0;
-            for(int i = 0; i < strlen(r1); i++)
-            {
-                if ('0' <= r1[i] && r1[i] <= '9')
-                {
-                    rr1 += (int) r1[i] * l;
-                    l *= 10;
-                }
-                else
-                {
-                    mvwprintw(menu_win, 14, 2, "Please put correct initial value of the range.");
-                    wrefresh(menu_win);
-
-                    wgetch(menu_win);
-
-                    wclear(menu_win);
-
-                    m = 1;
-
-                    break;
-                }
-            }
-
-            if(m == 1)
-            {
-                continue;
-            }
-
-            int rr2;
-            l = 1;
-            m = 0;
-            for(int i = 0; i < strlen(r2); i++)
-            {
-                if ('0' <= r2[i] && r2[i] <= '9')
-                {
-                    rr2 += (int) r2[i] * l;
-                    l *= 10;
-                }
-                else
-                {
-                    mvwprintw(menu_win, 14, 2, "Please put correct final value of range.");
-                    wrefresh(menu_win);
-
-                    wgetch(menu_win);
-
-                    wclear(menu_win);
-
-                    m = 1;
-
-                    break;
-                }
-            }
-
-            if(m == 1)
-            {
-                continue;
-            }
-
-            // if initial range is greater than final range, then the user is asked to input them again
-
-            if(rr1 >= rr2)
-            {
-                mvwprintw(menu_win, 14, 2, "Please provide appropriate range");
-                wrefresh(menu_win);
-
-                wgetch(menu_win);
-
-                wclear(menu_win);
-
-                continue;
-            }
-
-            // if the values are less than 0, then the user is asked to input them again
-
-            if(rr1 < 0 || rr2 < 0)
-            {
-                mvwprintw(menu_win, 14, 2, "Please provide appropriate range");
-                wrefresh(menu_win);
-
-                wgetch(menu_win);
-
-                wclear(menu_win);
-
-                continue;
-            }
-
-            int size = rr2 - rr1;
-
-            // the function to decrypt the file is called
-
-            decrypt(size, rr1, file);
+            decrypt(25, 0, file);
 
             mvwprintw(menu_win, 14, 2, "File has been Decrypted sucessfully!");
             wrefresh(menu_win);
@@ -547,5 +459,3 @@ int error(WINDOW *win, char file[])
 
     return 0;
 }
-
-
